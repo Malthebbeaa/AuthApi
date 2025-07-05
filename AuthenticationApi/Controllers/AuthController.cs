@@ -1,79 +1,54 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using AuthenticationApi.Models;
 using AuthenticationApi.Models.DTOs;
+using AuthenticationApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
 namespace AuthenticationApi.Controllers;
 
 [Route("api/auth")]
 [ApiController]
-public class AuthController(IConfiguration configuration) : Controller
+public class AuthController(IAuthService _authService) : Controller
 {
     public static User user = new();
     
     [HttpPost("register")]
-    public IActionResult Register([FromBody] UserDto request)
+    public async Task<IActionResult> Register([FromBody] RegisterDto request)
     {
-        var hashedPassword = new PasswordHasher<User>().HashPassword(user, request.Password);
-        
-        user.Username = request.Username;
-        user.PasswordHash = hashedPassword;
+        var user = await _authService.RegisterUserAsync(request);
 
+        if (user == null)
+        {
+            return BadRequest("User already exists");
+        }
         return Ok(user);
     }
 
     [HttpPost("login")]
-    public IActionResult Login([FromBody] UserDto request)
+    public async Task<IActionResult> Login([FromBody] LoginDto request)
     {
-        if (request.Username != user.Username)
-        {
-            return BadRequest("User not found");
-        }
+        var token = await _authService.LoginUserAsync(request);
 
-        if (new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash,  request.Password) == PasswordVerificationResult.Failed)
+        if (token == null)
         {
-            return BadRequest("Passwords do not match");
+            return BadRequest("Invalid credentials");
         }
-
-        string token = CreateToken(user);
         return Ok(token);
     }
+
+    [Authorize]
+    [HttpGet("auth-only")]
+    public IActionResult AuthenticatedEndpoint()
+    {
+        return Ok("You are authenticated");
+    }
     
-    [HttpGet("users")]
-    public IActionResult Users()
+    [Authorize(Roles = "Admin")]
+    [HttpGet("admin-only")]
+    public IActionResult AdmingOnlyEndpoint()
     {
-        user.Id = 1;
-        user.Username = "Malthe";
-        user.PasswordHash = "P@$$w0rd";
-        user.PasswordSalt = new byte[] {1};
-
-        
-        return Ok(user);
+        return Ok("You are an admin");
     }
-
-    private string CreateToken(User user)
-    {
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, user.Username)
-        };
-
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetValue<string>("AppSettings:Token")!));
-        
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
-
-        var tokenDescriptor = new JwtSecurityToken(
-            issuer: configuration.GetValue<string>("AppSettings:Issuer"),
-            audience: configuration.GetValue<string>("AppSettings:Audience"),
-            claims: claims,
-            expires: DateTime.Now.AddHours(2),
-            signingCredentials: creds
-        );
-        
-        return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
-    }
+    
 }
