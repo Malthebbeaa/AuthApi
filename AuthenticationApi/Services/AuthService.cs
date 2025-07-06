@@ -23,6 +23,8 @@ public class AuthService(UserDbContext _context, IConfiguration _configuration):
         
         user.Username = request.Username;
         user.PasswordHash = hashedPassword;
+        user.Email = request.Email;
+        user.Role = request.Role;
 
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
@@ -31,7 +33,7 @@ public class AuthService(UserDbContext _context, IConfiguration _configuration):
 
     public async Task<string> LoginUserAsync(LoginDto request)
     {
-        var user = await _context.Users.SingleOrDefaultAsync(u => u.Username == request.Username);
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
         
         if (user == null)
         {

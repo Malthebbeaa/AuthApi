@@ -11,7 +11,6 @@ namespace AuthenticationApi.Controllers;
 [ApiController]
 public class AuthController(IAuthService _authService) : Controller
 {
-    public static User user = new();
     
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterDto request)
