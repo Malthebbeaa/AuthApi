@@ -13,6 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<UserDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IProdService, ProdService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
     AddJwtBearer(options =>
     {

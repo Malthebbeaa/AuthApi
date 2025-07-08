@@ -23,4 +23,8 @@
       <None Include=".http\AuthenticationApi.http" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include=".http\Products.http" />
+    </ItemGroup>
+
 </Project>

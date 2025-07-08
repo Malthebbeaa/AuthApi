@@ -1,0 +1,38 @@
+@AuthenticationApi_HostAddress = http://localhost:5116
+
+###Create prod category
+POST {{AuthenticationApi_HostAddress}}/api/product/prodCategory
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Shoes"
+}
+
+###Create product
+POST {{AuthenticationApi_HostAddress}}/api/product/product
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Lebron James Cleveland",
+  "price": 100.75,
+  "description": "Lebron James Jersey from his rookie season in Cleveland Cavaliers",
+  "productCategoryId": "56f204bb-4489-4639-a2ad-3c166be7f1fc"
+}
+
+
+### get categories
+GET {{AuthenticationApi_HostAddress}}/api/product/prodCategories
+Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibWFsdGhlIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3NTE5OTI1MDcsImlzcyI6Ik15QXBwIiwiYXVkIjoiTXlBcHBVc2VycyJ9.IE_RQhRj3rwRFaPZSbf8F7sMLSWPPEGlZqzQ53l595j1Dct4udm822BZPWtoF1pCEhGX_k9YiPZKjl4MBUerpw
+Accept: application/json
+
+### get products
+GET {{AuthenticationApi_HostAddress}}/api/product/products
+Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibWFsdGhlIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3NTE5OTI1MDcsImlzcyI6Ik15QXBwIiwiYXVkIjoiTXlBcHBVc2VycyJ9.IE_RQhRj3rwRFaPZSbf8F7sMLSWPPEGlZqzQ53l595j1Dct4udm822BZPWtoF1pCEhGX_k9YiPZKjl4MBUerpw
+Accept: application/json
+
+### get product
+GET {{AuthenticationApi_HostAddress}}/api/product/c7df19fe-718d-4a78-bc1c-743610a41765
+Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibWFsdGhlIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3NTE5OTI1MDcsImlzcyI6Ik15QXBwIiwiYXVkIjoiTXlBcHBVc2VycyJ9.IE_RQhRj3rwRFaPZSbf8F7sMLSWPPEGlZqzQ53l595j1Dct4udm822BZPWtoF1pCEhGX_k9YiPZKjl4MBUerpw
+Accept: application/json
