@@ -1,0 +1,35 @@
+@AuthenticationApi_HostAddress = http://localhost:5116
+
+###
+
+POST {{AuthenticationApi_HostAddress}}/api/auth/register
+Content-Type: application/json
+Accept: application/json
+
+{
+  "username": "Alice",
+  "email": "alice@mail.com",
+  "password": "aliPass",
+  "role": "Admin"
+}
+
+###
+POST {{AuthenticationApi_HostAddress}}/api/auth/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "username": "malthe",
+  "password": "secret123"
+}
+
+###
+GET {{AuthenticationApi_HostAddress}}/api/auth/auth-only
+Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibWFsdGhlIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3NTE5Nzg3MTAsImlzcyI6Ik15QXBwIiwiYXVkIjoiTXlBcHBVc2VycyJ9.yIN0lKcqNeyCc4Sl-juu92vwKv7gKYjd4q0juTsZgQP_MQvDPPm3ZDEurSo8XaKxq-qU1yl7-MYSFvoQTHA6Cg
+Accept: application/json
+
+
+###
+GET {{AuthenticationApi_HostAddress}}/api/auth/admin-only
+Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibWFsdGhlIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3NTE5Nzg3MTAsImlzcyI6Ik15QXBwIiwiYXVkIjoiTXlBcHBVc2VycyJ9.yIN0lKcqNeyCc4Sl-juu92vwKv7gKYjd4q0juTsZgQP_MQvDPPm3ZDEurSo8XaKxq-qU1yl7-MYSFvoQTHA6Cg
+Accept: application/json

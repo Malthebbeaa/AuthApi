@@ -4,6 +4,7 @@ using AuthenticationApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuthenticationApi.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    partial class UserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250707113329_ForeignKey")]
+    partial class ForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,15 +25,29 @@ namespace AuthenticationApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AuthenticationApi.Models.Product", b =>
+            modelBuilder.Entity("AuthenticationApi.Models.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("AuthenticationApi.Models.Item", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -39,20 +56,23 @@ namespace AuthenticationApi.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<Guid?>("ProductCategoryId")
+                    b.Property<Guid?>("SerialNumberId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductCategoryId");
+                    b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Items");
                 });
 
-            modelBuilder.Entity("AuthenticationApi.Models.ProductCategory", b =>
+            modelBuilder.Entity("AuthenticationApi.Models.SerialNumber", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ItemId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -61,7 +81,10 @@ namespace AuthenticationApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductCategories");
+                    b.HasIndex("ItemId")
+                        .IsUnique();
+
+                    b.ToTable("SerialNumbers");
                 });
 
             modelBuilder.Entity("AuthenticationApi.Models.User", b =>
@@ -93,18 +116,34 @@ namespace AuthenticationApi.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("AuthenticationApi.Models.Product", b =>
+            modelBuilder.Entity("AuthenticationApi.Models.Item", b =>
                 {
-                    b.HasOne("AuthenticationApi.Models.ProductCategory", "ProductCategory")
-                        .WithMany("Products")
-                        .HasForeignKey("ProductCategoryId");
+                    b.HasOne("AuthenticationApi.Models.Category", "Category")
+                        .WithMany("Items")
+                        .HasForeignKey("CategoryId");
 
-                    b.Navigation("ProductCategory");
+                    b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("AuthenticationApi.Models.ProductCategory", b =>
+            modelBuilder.Entity("AuthenticationApi.Models.SerialNumber", b =>
                 {
-                    b.Navigation("Products");
+                    b.HasOne("AuthenticationApi.Models.Item", "Item")
+                        .WithOne("SerialNumber")
+                        .HasForeignKey("AuthenticationApi.Models.SerialNumber", "ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+                });
+
+            modelBuilder.Entity("AuthenticationApi.Models.Category", b =>
+                {
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("AuthenticationApi.Models.Item", b =>
+                {
+                    b.Navigation("SerialNumber");
                 });
 #pragma warning restore 612, 618
         }
